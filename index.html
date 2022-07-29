@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+         crossorigin="anonymous"
+      />
+      <style>
+         body {
+            background-color: #eee;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+         }
+
+         .container {
+            padding: 50px;
+            background-color: #fff;
+         }
+      </style>
+      <title>Proyecto ATM Javascript</title>
+   </head>
+   <body>
+      <div class="container">
+         <h1 class="display-2 mb-4 text-center">Bienvenido a su Banco</h1>
+         <h3 class="display-4 mb-4">Ingrese sus datos:</h3>
+
+         <form>
+            <div class="form-group">
+               <label for="usuario">Nombre de Usuario:</label>
+               <input type="text" class="form-control" id="usuario" placeholder="Ingrese el nombre de usuario" />
+            </div>
+            <div class="form-group">
+               <label for="password">Contraseña:</label>
+               <input type="password" class="form-control" id="password" placeholder="Ingrese la contraseña" />
+            </div>
+
+            <a href="#" class="btn btn-primary" onclick="login()">Ingresar</a>
+         </form>
+      </div>
+
+      <script>
+         let clienteUno = {
+            nombre: "Mali",
+            password: "gato",
+            saldo: 200,
+         };
+         let clienteDos = {
+            nombre: "Gera",
+            password: "perro",
+            saldo: 290,
+         };
+         let clienteTres = {
+            nombre: "Maui",
+            password: "raton",
+            saldo: 67,
+         };
+
+         let clientes = [clienteUno, clienteDos, clienteTres];
+
+         function login() {
+            let correo = document.getElementById("usuario").value;
+            let contrasena = document.getElementById("password").value;
+            evaluar(correo, contrasena);
+         }
+
+         function evaluar(mail, contrasena) {
+            let clienteOk = clientes.find((persona) => persona.nombre == mail);
+            if (clienteOk != undefined) {
+               if (clienteOk.password == contrasena) {
+                  console.log("Welcome mr. ", clienteOk.nombre);
+                  sessionStorage.setItem("nombre", clienteOk.nombre);
+                  sessionStorage.setItem("saldo", clienteOk.saldo);
+                  window.location.href = "cuenta.html";
+               } else {
+                  Swal.fire({
+                     icon: "error",
+                     title: "Oops...",
+                     text: "Tu contraseña es incorrecta!",
+                  });
+               }
+            } else {
+               Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "No existe el usuario!",
+               });
+            }
+         }
+      </script>
+
+      <script
+         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+         crossorigin="anonymous"
+      ></script>
+      <script
+         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+         crossorigin="anonymous"
+      ></script>
+      <script
+         src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+         crossorigin="anonymous"
+      ></script>
+
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   </body>
+</html>

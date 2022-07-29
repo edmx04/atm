@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+         rel="stylesheet"
+         href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+         crossorigin="anonymous"
+      />
+      <title>Proyecto ATM Javascript</title>
+
+      <style>
+         body {
+            background-color: #e9ecef;
+         }
+         .jumbotron {
+            height: 100vh;
+            margin-bottom: 0;
+   
+         }
+
+         #variableSaldo {
+            font-weight: 600;
+         }
+
+         @media (max-width: 576px) { 
+            
+            .display-3 {
+               font-size: 32px;
+               
+            }
+            .card-title {
+               font-size: 18px;
+            }
+
+            .hide {
+               display: none;
+            }
+
+            p.display-4 {
+               font-size: 36px;
+            }
+
+            div.mt-4 {
+               margin-top: 0!important;
+            }
+          }
+
+      </style>
+   </head>
+   <body>
+      <div class="jumbotron jumbotron-fluid"  /> <!-- Jumbotron -->
+         <div class="container">
+            <!-- Contenedor para centar -->
+            <h1 class="display-3 text-danger text-center">¿Qué operación deseas realizar? <span id="nombreUsuario" class="text-success display-3"></span></h1>
+
+            <div class="row mt-2">
+               <!-- fila para 2 cards -->
+               <div class="col-sm-6">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">Ingresa una cantidad para depositar</h5>
+                        <div class="input-group mb-3">
+                           <div class="input-group-prepend">
+                              <span class="input-group-text">$</span>
+                           </div>
+                           <input
+                              id="deposito"
+                              type="number"
+                              class="form-control"
+                              aria-label="Amount (to the nearest dollar)"
+                              placeholder="Ingresa una cantidad"
+                           />
+                           <div class="input-group-append">
+                              <span class="input-group-text">.00</span>
+                           </div>
+                        </div>
+                        <a href="#" id="btnDeposito" class="btn btn-primary bg-success align-middle" onclick="hacerDeposito()">Realizar Deposito!</a>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-6">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">Ingresa una cantidad para retirar</h5>
+                        <div class="input-group mb-3">
+                           <div class="input-group-prepend">
+                              <span class="input-group-text">$</span>
+                           </div>
+                           <input
+                              id="retiro"
+                              type="number"
+                              class="form-control"
+                              aria-label="Amount (to the nearest dollar)"
+                              placeholder="Ingresa una cantidad"
+                           />
+                           <div class="input-group-append">
+                              <span class="input-group-text">.00</span>
+                           </div>
+                        </div>
+                        <a href="#" id="btnRetiro" class="btn btn-primary bg-warning" onclick="hacerRetiro()">Realizar Retiro!</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row mt-4">
+               <!-- fila para 2 cards -->
+               <div class="col-sm-6 hide">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">Da click para consultar tu saldo!</h5>
+                        <a href="#" class="btn btn-primary bg-info" onclick=" mostrarSaldo()">Consultar tu Saldo!</a>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-sm-6">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">Da click para cerrar la sesión!</h5>
+
+                        <a href="#" class="btn btn-primary bg-danger" onclick="salida()">Cerrar Sesión!</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+            <p class="display-4 text-center mt-4 text-info" id="parrafoSaldo">Tu saldo inicial es: <span id="saldoInicial"></span></p> 
+            <p class="display-4 text-center mt-4 text-success" id="parrafoNuevoSaldo">Tu nuevo saldo es de: <span id="variableSaldo"></span></p>
+     
+      </div>
+
+      <script>
+         let saldo = Number(sessionStorage.getItem('saldo')); //Saldo inicial desde sessionStorage. 
+         let saldoInicial = Number(sessionStorage.getItem('saldo'));
+         let nombreCliente = sessionStorage.getItem('nombre');
+         document.getElementById("saldoInicial").innerHTML = saldo;
+         document.getElementById("nombreUsuario").innerHTML = nombreCliente;
+
+         //funcion para mostrar el saldo inicial
+         function mostrarSaldo() {
+            document.getElementById("variableSaldo").innerHTML = saldo;
+            console.log(saldo);
+         }
+
+         //funcion para hacer un deposito
+         let deposito;
+         let totalDeposito;
+         function hacerDeposito() {
+            deposito = Number(document.getElementById("deposito").value);
+            totalDeposito = deposito + saldo;
+            if (isNaN(deposito) || deposito === "") {
+               console.log("por favor ingresa una cantidad correcta!");
+               // hacerDeposito();
+            } else if (totalDeposito >= 2000) {
+               alert("No es posible tener mas de 2000 en cuenta");
+            } else {
+               saldo += deposito;
+               mostrarSaldo();
+               console.log(saldo);
+            }
+         }
+
+         //funcion para hacer un retiro
+         let retiro;
+         let totalRetiro;
+         function hacerRetiro() {
+            retiro = Number(document.getElementById("retiro").value);
+            totalRetiro = saldo - retiro;
+            if (isNaN(retiro) || retiro === "") {
+               alert("por favor ingresa una cantidad correcta!");
+               hacerRetiro();
+            } else if (totalRetiro <= 20) {
+               alert("No es posible tener menos de 20 en cuenta");
+            } else {
+               saldo -= retiro;
+               mostrarSaldo();
+               console.log(saldo);
+            }
+         }
+         //funcion para cerrar ventana
+         function salida() {
+            let salirSesion = confirm("Deseas cerrar la sesion");
+            if (confirm("Deseas cerrar la sesion") == true) {
+               window.location.href = "index.html";
+            }
+         }
+ 
+         //Borrar inputs
+         const btn = document.getElementById('btnDeposito');
+         btn.addEventListener('click', function handleClick(event) {
+            //event.preventDefault();
+            const borrarDeposito = document.getElementById('deposito');
+            // borrar valor input despues de click
+            borrarDeposito.value = '';
+            });
+
+            //borrar input retiro
+            const btn2 = document.getElementById('btnRetiro');
+         btn2.addEventListener('click', function handleClick(event) {
+            const borrarRetiro = document.getElementById('retiro');
+            console.log(borrarRetiro.value);
+            borrarRetiro.value = '';
+            });
+      </script>
+
+      <script
+         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+         crossorigin="anonymous"
+      ></script>
+      <script
+         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+         crossorigin="anonymous"
+      ></script>
+      <script
+         src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+         crossorigin="anonymous"
+      ></script>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   </body>
+</html>
